@@ -2,6 +2,36 @@
 
 @section('content')
 
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['bar']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Grade', 'Nilai Quiz', 'Nilai Tugas', 'Nilai Absensi', 'Nilai Praktek', 'Nilai UAS'],
+                @foreach ($scores as $key=>$score)
+                    ['{{$score->nama}}', '{{$score->nilai_quiz}}',
+                    '{{$score->nilai_tugas}}', '{{$score->nilai_absensi}}',
+                    '{{$score->nilai_praktek}}', '{{$score->nilai_uas}}'],
+                @endforeach
+            ]);
+
+            var options = {
+                chart: {
+                    title: 'Mahasiswa Binus',
+                    subtitle: 'Nilai tugas',
+                }
+            };
+
+            var chart = new google.charts.Bar(document.getElementById('myChart'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+    </script>
+</head>
+
 <body>
     <div class="container mt-5">
         <div class="panel panel-primary">
@@ -65,6 +95,7 @@
             </div>
         </div>
     </div>
+    <div class="container" id="myChart" style="width: 800px; height: 500px;"></div>
     <div class="container">
 
         <table class="table table-bordered">
